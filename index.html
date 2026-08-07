@@ -4,15 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZMTQ 16Types診断</title>
+    <!-- Google Fontsの読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0b132b;
             --text-color: #e0e1dd;
-            --primary-color: #3a86ff;
+            --primary-color: #3a86ff; /* 青系 (K, O, B, T) */
             --primary-glow: rgba(58, 134, 255, 0.6);
             --secondary-color: #1c2541;
-            --highlight: #00f0ff;
+            --highlight: #00f0ff;    /* シアン系 (P, F, S, I) */
+            --highlight-glow: rgba(0, 240, 255, 0.6);
             --card-bg: rgba(28, 37, 65, 0.8);
+            --font-main: 'Noto Sans JP', sans-serif;
+            --font-eng: 'Cinzel', serif;
         }
 
         * {
@@ -22,19 +29,17 @@
         }
 
         body {
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            font-family: var(--font-main);
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
             display: flex;
             justify-content: center;
             min-height: 100vh;
-            /* 画面遷移時のガタつきを防ぐため、常にスクロールバーの領域を確保します */
             overflow-y: scroll;
             overflow-x: hidden;
         }
 
-        /* なめらかな画面遷移用のアニメーション設定 */
         .screen {
             width: 100%;
             max-width: 800px;
@@ -61,22 +66,27 @@
         }
 
         h1 {
+            font-family: var(--font-eng);
             color: var(--highlight);
-            text-shadow: 0 0 10px var(--primary-glow);
-            font-size: 2rem;
+            text-shadow: 0 0 10px var(--highlight-glow);
+            font-size: 2.2rem;
+            line-height: 1.2;
         }
 
         .subtitle {
             margin-bottom: 40px;
             color: var(--primary-color);
             letter-spacing: 4px;
+            font-size: 0.9rem;
+            text-shadow: 0 0 5px var(--primary-glow);
         }
 
-        .highlight {
+        .highlight-text {
             color: var(--highlight);
             font-weight: bold;
             margin-bottom: 15px;
             text-align: center;
+            text-shadow: 0 0 8px var(--highlight-glow);
         }
 
         .button-group {
@@ -99,6 +109,7 @@
             border: 1px solid var(--primary-color);
             padding: 15px 20px;
             font-size: 1rem;
+            font-family: var(--font-main);
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -114,13 +125,16 @@
 
         .back-btn {
             border-color: #666;
+            color: #ccc;
             margin-top: 30px;
             max-width: 200px;
+            box-shadow: none;
         }
 
         .back-btn:hover {
-            background-color: #666;
-            box-shadow: none;
+            background-color: #444;
+            border-color: #444;
+            color: #fff;
         }
 
         .x-btn {
@@ -142,7 +156,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* この診断についてのスタイリッシュな装飾 */
+        /* 診断についての指標装飾 */
         .indicator-box {
             margin-bottom: 20px;
             padding: 20px;
@@ -153,15 +167,16 @@
         .indicator-box.blue { border-left: 5px solid var(--primary-color); }
         .indicator-box.cyan { border-left: 5px solid var(--highlight); }
         .ind-letter {
+            font-family: var(--font-eng);
             font-size: 2.5rem;
             margin-bottom: 5px;
             text-align: left;
         }
         .blue .ind-letter { color: var(--primary-color); text-shadow: 0 0 15px var(--primary-glow); }
-        .cyan .ind-letter { color: var(--highlight); text-shadow: 0 0 15px rgba(0, 240, 255, 0.5); }
+        .cyan .ind-letter { color: var(--highlight); text-shadow: 0 0 15px var(--highlight-glow); }
         .ind-short {
             font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 700;
             margin-bottom: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 8px;
@@ -171,6 +186,7 @@
             color: #bbb;
         }
 
+        /* プログレスバー */
         .progress-bar-container {
             width: 100%;
             height: 6px;
@@ -185,69 +201,186 @@
             background: var(--highlight);
             width: 0%;
             transition: width 0.3s;
-            box-shadow: 0 0 8px var(--highlight);
+            box-shadow: 0 0 8px var(--highlight-glow);
         }
 
-        .options-container {
+        /* 質問表示エリア */
+        .question-wrapper {
+            width: 100%;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        .question-wrapper.fade-out {
+            opacity: 0;
+        }
+
+        #question-text {
+            font-size: 1.4rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        /* ひし形ボタンの選択肢UI */
+        .diamond-options-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            align-items: center;
             width: 100%;
-            margin-top: 30px;
+            margin-bottom: 40px;
         }
 
-        .option-btn {
-            padding: 12px;
-            font-size: 1rem;
+        .labels-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #aaa;
+            font-size: 0.9rem;
         }
 
+        .diamonds-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 0 10px;
+        }
+
+        .diamond-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s ease, filter 0.2s ease;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .diamond-btn:hover {
+            transform: scale(1.2);
+            background-color: transparent; /* 上書き防止 */
+        }
+
+        .diamond-shape {
+            background-color: transparent;
+            transform: rotate(45deg);
+            transition: all 0.2s ease;
+        }
+
+        /* 左側（青系） */
+        .diamond-left .diamond-shape {
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 5px var(--primary-glow);
+        }
+        .diamond-left:hover .diamond-shape {
+            background-color: var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* 右側（シアン系） */
+        .diamond-right .diamond-shape {
+            border: 2px solid var(--highlight);
+            box-shadow: 0 0 5px var(--highlight-glow);
+        }
+        .diamond-right:hover .diamond-shape {
+            background-color: var(--highlight);
+            box-shadow: 0 0 15px var(--highlight-glow);
+        }
+
+        /* ひし形のサイズ */
+        .size-large .diamond-shape { width: 36px; height: 36px; }
+        .size-medium .diamond-shape { width: 28px; height: 28px; }
+        .size-small .diamond-shape { width: 20px; height: 20px; }
+
+        /* 結果画面の装飾 */
+        #result-code {
+            font-family: var(--font-eng);
+            font-size: 4rem;
+            color: #fff;
+            text-shadow: 0 0 20px var(--highlight-glow), 0 0 40px var(--primary-glow);
+            letter-spacing: 5px;
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        #result-job {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--highlight);
+            margin-bottom: 10px;
+        }
+
+        #result-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* シングルバーのグラフスタイル */
         .chart-container {
             width: 100%;
             background: var(--card-bg);
-            padding: 20px;
+            padding: 25px 20px;
             border-radius: 12px;
             margin-bottom: 30px;
         }
 
-        .chart-row {
+        .single-bar-row {
+            margin-bottom: 15px;
+        }
+
+        .bar-labels {
             display: flex;
-            align-items: center;
-            margin: 8px 0;
-        }
-
-        .chart-row .label {
-            width: 30px;
+            justify-content: space-between;
+            font-family: var(--font-eng);
+            font-size: 1.1rem;
             font-weight: bold;
+            margin-bottom: 5px;
         }
+        
+        .label-left { color: var(--primary-color); }
+        .label-right { color: var(--highlight); }
+        .pct-text { font-family: var(--font-main); font-size: 0.9rem; margin: 0 5px; color: #fff;}
 
-        .bar-bg {
-            flex-grow: 1;
-            height: 12px;
-            background: #333;
-            border-radius: 6px;
-            margin: 0 15px;
+        .single-bar-bg {
+            width: 100%;
+            height: 16px;
+            background: #222; /* 未選択部分（基本見えない設定） */
+            border-radius: 8px;
             overflow: hidden;
+            display: flex;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
         }
 
-        .bar {
+        .bar-left-fill {
             height: 100%;
-            width: 0%;
-            transition: width 1s ease-out;
+            background-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-glow);
+            transition: width 1s cubic-bezier(0.1, 0.7, 0.1, 1);
         }
 
-        .k-color, .o-color, .b-color, .t-color { background-color: var(--primary-color); }
-        .p-color, .f-color, .s-color, .i-color { background-color: var(--highlight); }
-
-        .small-desc {
-            font-size: 0.85rem;
-            color: #aaa;
-            margin-bottom: 20px;
-            padding-left: 45px;
+        .bar-right-fill {
+            height: 100%;
+            background-color: var(--highlight);
+            box-shadow: 0 0 10px var(--highlight-glow);
+            transition: width 1s cubic-bezier(0.1, 0.7, 0.1, 1);
         }
 
+        /* 16タイプ一覧 */
         .type-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 15px;
             width: 100%;
         }
@@ -260,14 +393,14 @@
             gap: 5px;
         }
 
-        .type-code { font-size: 1.2rem; font-weight: bold; color: var(--highlight); }
-        .type-job { font-size: 0.9rem; }
+        .type-code { font-family: var(--font-eng); font-size: 1.4rem; font-weight: bold; color: var(--highlight); }
+        .type-job { font-size: 0.9rem; font-weight: 500;}
 
-        /* モーダル（ポップアップ）のなめらかなアニメーション */
+        /* モーダル */
         .modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -285,8 +418,8 @@
         .modal-content {
             background: var(--bg-color);
             border: 1px solid var(--primary-color);
-            box-shadow: 0 0 20px var(--primary-glow);
-            padding: 30px;
+            box-shadow: 0 0 30px var(--primary-glow);
+            padding: 35px 30px;
             border-radius: 12px;
             width: 90%;
             max-width: 500px;
@@ -301,14 +434,16 @@
 
         .close-btn {
             position: absolute;
-            top: 15px; right: 20px;
-            font-size: 1.5rem;
+            top: 10px; right: 20px;
+            font-size: 2rem;
             cursor: pointer;
             color: #888;
+            transition: color 0.2s;
         }
 
         .close-btn:hover { color: #fff; }
 
+        /* オーバーレイローディング */
         #transition-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -370,10 +505,10 @@
     <div id="type-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3 id="modal-code-job"></h3>
-            <p id="modal-title" class="highlight"></p>
+            <h3 id="modal-code-job" style="font-family: var(--font-eng); font-size: 1.8rem; color: var(--highlight);"></h3>
+            <p id="modal-title" class="highlight-text"></p>
             <p id="modal-desc"></p>
-            <div id="modal-indicators" class="indicator-mini"></div>
+            <div id="modal-indicators" class="indicator-mini" style="margin-top: 20px; font-size: 0.9rem; color: #ccc;"></div>
         </div>
     </div>
 
@@ -381,43 +516,91 @@
         <div class="progress-bar-container">
             <div id="quiz-progress"></div>
         </div>
-        <p id="question-counter">1 / 32</p>
-        <h2 id="question-text">質問文がここに入ります</h2>
-        <div class="options-container">
-            <button class="option-btn" onclick="selectAnswer(4)">とてもそう思う</button>
-            <button class="option-btn" onclick="selectAnswer(2)">そう思う</button>
-            <button class="option-btn" onclick="selectAnswer(1)">少しそう思う</button>
-            <button class="option-btn" onclick="selectAnswer(-1)">あまりそう思わない</button>
-            <button class="option-btn" onclick="selectAnswer(-2)">そう思わない</button>
-            <button class="option-btn" onclick="selectAnswer(-4)">全くそう思わない</button>
+        <p id="question-counter" style="font-family: var(--font-eng); font-weight: bold; color: #888;">1 / 32</p>
+        
+        <div id="q-wrapper" class="question-wrapper">
+            <h2 id="question-text">質問文がここに入ります</h2>
+            
+            <div class="diamond-options-container">
+                <div class="labels-row">
+                    <span>そう思う</span>
+                    <span>そう思わない</span>
+                </div>
+                <div class="diamonds-row">
+                    <button class="diamond-btn diamond-left size-large" onclick="selectAnswer(4)" title="とてもそう思う"><div class="diamond-shape"></div></button>
+                    <button class="diamond-btn diamond-left size-medium" onclick="selectAnswer(2)" title="そう思う"><div class="diamond-shape"></div></button>
+                    <button class="diamond-btn diamond-left size-small" onclick="selectAnswer(1)" title="少しそう思う"><div class="diamond-shape"></div></button>
+                    
+                    <button class="diamond-btn diamond-right size-small" onclick="selectAnswer(-1)" title="あまりそう思わない"><div class="diamond-shape"></div></button>
+                    <button class="diamond-btn diamond-right size-medium" onclick="selectAnswer(-2)" title="そう思わない"><div class="diamond-shape"></div></button>
+                    <button class="diamond-btn diamond-right size-large" onclick="selectAnswer(-4)" title="全くそう思わない"><div class="diamond-shape"></div></button>
+                </div>
+            </div>
         </div>
+        
         <button class="back-btn" onclick="navigate('home-screen')">ホームに戻る</button>
     </div>
 
     <div id="result-screen" class="screen">
         <h2 id="result-code"></h2>
         <h3 id="result-job"></h3>
-        <p id="result-title" class="highlight"></p>
+        <p id="result-title" class="highlight-text"></p>
         <div class="content-box">
             <p id="result-desc"></p>
         </div>
         
         <div class="chart-container">
-            <div class="chart-row"><span class="label">K</span><div class="bar-bg"><div id="bar-kp-k" class="bar k-color"></div></div><span id="pct-k"></span></div>
-            <div class="chart-row"><span class="label">P</span><div class="bar-bg"><div id="bar-kp-p" class="bar p-color"></div></div><span id="pct-p"></span></div>
-            <p id="desc-kp" class="small-desc"></p>
+            <!-- KP軸 -->
+            <div class="single-bar-row">
+                <div class="bar-labels">
+                    <span class="label-left">K <span class="pct-text" id="pct-k"></span></span>
+                    <span class="label-right"><span class="pct-text" id="pct-p"></span> P</span>
+                </div>
+                <div class="single-bar-bg">
+                    <div id="bar-k" class="bar-left-fill" style="width: 50%;"></div>
+                    <div id="bar-p" class="bar-right-fill" style="width: 50%;"></div>
+                </div>
+                <p id="desc-kp" class="small-desc" style="margin-top: 5px; padding-left: 0; text-align: center;"></p>
+            </div>
 
-            <div class="chart-row"><span class="label">O</span><div class="bar-bg"><div id="bar-of-o" class="bar o-color"></div></div><span id="pct-o"></span></div>
-            <div class="chart-row"><span class="label">F</span><div class="bar-bg"><div id="bar-of-f" class="bar f-color"></div></div><span id="pct-f"></span></div>
-            <p id="desc-of" class="small-desc"></p>
+            <!-- OF軸 -->
+            <div class="single-bar-row">
+                <div class="bar-labels">
+                    <span class="label-left">O <span class="pct-text" id="pct-o"></span></span>
+                    <span class="label-right"><span class="pct-text" id="pct-f"></span> F</span>
+                </div>
+                <div class="single-bar-bg">
+                    <div id="bar-o" class="bar-left-fill" style="width: 50%;"></div>
+                    <div id="bar-f" class="bar-right-fill" style="width: 50%;"></div>
+                </div>
+                <p id="desc-of" class="small-desc" style="margin-top: 5px; padding-left: 0; text-align: center;"></p>
+            </div>
 
-            <div class="chart-row"><span class="label">B</span><div class="bar-bg"><div id="bar-bs-b" class="bar b-color"></div></div><span id="pct-b"></span></div>
-            <div class="chart-row"><span class="label">S</span><div class="bar-bg"><div id="bar-bs-s" class="bar s-color"></div></div><span id="pct-s"></span></div>
-            <p id="desc-bs" class="small-desc"></p>
+            <!-- BS軸 -->
+            <div class="single-bar-row">
+                <div class="bar-labels">
+                    <span class="label-left">B <span class="pct-text" id="pct-b"></span></span>
+                    <span class="label-right"><span class="pct-text" id="pct-s"></span> S</span>
+                </div>
+                <div class="single-bar-bg">
+                    <div id="bar-b" class="bar-left-fill" style="width: 50%;"></div>
+                    <div id="bar-s" class="bar-right-fill" style="width: 50%;"></div>
+                </div>
+                <p id="desc-bs" class="small-desc" style="margin-top: 5px; padding-left: 0; text-align: center;"></p>
+            </div>
 
-            <div class="chart-row"><span class="label">T</span><div class="bar-bg"><div id="bar-ti-t" class="bar t-color"></div></div><span id="pct-t"></span></div>
-            <div class="chart-row"><span class="label">I</span><div class="bar-bg"><div id="bar-ti-i" class="bar i-color"></div></div><span id="pct-i"></span></div>
-            <p id="desc-ti" class="small-desc"></p>
+            <!-- TI軸 -->
+            <div class="single-bar-row">
+                <div class="bar-labels">
+                    <span class="label-left">T <span class="pct-text" id="pct-t"></span></span>
+                    <span class="label-right"><span class="pct-text" id="pct-i"></span> I</span>
+                </div>
+                <div class="single-bar-bg">
+                    <div id="bar-t" class="bar-left-fill" style="width: 50%;"></div>
+                    <div id="bar-i" class="bar-right-fill" style="width: 50%;"></div>
+                </div>
+                <p id="desc-ti" class="small-desc" style="margin-top: 5px; padding-left: 0; text-align: center;"></p>
+            </div>
         </div>
 
         <div class="button-group horizontal">
@@ -432,25 +615,23 @@
     <script src="questions.js"></script>
     
     <script>
-        const APP_TITLE = "ZMTQ16Types診断";
-        document.getElementById('home-title').innerText = APP_TITLE;
+        const APP_TITLE = "ZMTQ 16Types診断";
 
         let shuffledQuestions = [];
         let currentQIndex = 0;
         let scores = { K: 0, P: 0, O: 0, F: 0, B: 0, S: 0, T: 0, I: 0 };
         let answerHistory = {};
 
-        // 画面遷移ロジック（ローディングの有無を指定可能に改善）
+        // 画面遷移ロジック
         function navigate(targetScreenId, showLoading = false, callback = null) {
             const current = document.querySelector('.screen.active');
             
             if (current) {
-                // 現在の画面をフェードアウト
                 current.classList.remove('fade-in');
                 setTimeout(() => {
                     current.classList.remove('active');
                     processNextStep();
-                }, 300); // 0.3秒待機
+                }, 300);
             } else {
                 processNextStep();
             }
@@ -459,12 +640,11 @@
                 if (showLoading) {
                     const overlay = document.getElementById('transition-overlay');
                     overlay.style.display = 'flex';
-                    void overlay.offsetWidth; // 強制リフロー
+                    void overlay.offsetWidth;
                     overlay.style.opacity = '1';
 
                     if (callback) callback();
 
-                    // 2秒後にローディング画面を消して次へ
                     setTimeout(() => {
                         overlay.style.opacity = '0';
                         setTimeout(() => {
@@ -481,9 +661,9 @@
             function showTargetScreen() {
                 const target = document.getElementById(targetScreenId);
                 target.classList.add('active');
-                void target.offsetWidth; // 強制リフロー
+                void target.offsetWidth;
                 target.classList.add('fade-in');
-                window.scrollTo(0, 0); // 遷移時に一番上に戻す
+                window.scrollTo(0, 0);
             }
         }
 
@@ -495,7 +675,6 @@
         function generateAboutPage() {
             const container = document.getElementById('about-indicators');
             let html = '';
-            // K, O, B, Tを青系、P, F, S, Iをシアン系に色分け
             const colors = { K: 'blue', P: 'cyan', O: 'blue', F: 'cyan', B: 'blue', S: 'cyan', T: 'blue', I: 'cyan' };
             
             for(const [key, val] of Object.entries(indicatorDesc)) {
@@ -533,12 +712,10 @@
             });
             document.getElementById('modal-indicators').innerHTML = indHtml;
 
-            // アニメーションを伴って表示
             document.getElementById('type-modal').classList.add('active');
         }
 
         function closeModal() {
-            // アニメーションを伴って非表示
             document.getElementById('type-modal').classList.remove('active');
         }
 
@@ -549,15 +726,14 @@
             
             shuffledQuestions = [...questionsData].sort(() => Math.random() - 0.5);
             
-            navigate('quiz-screen', false, loadQuestion);
+            navigate('quiz-screen', false, () => {
+                document.getElementById('q-wrapper').classList.remove('fade-out');
+                loadQuestion();
+            });
         }
 
         function loadQuestion() {
-            if(currentQIndex >= shuffledQuestions.length) {
-                // ここは呼ばれませんが安全のため残します
-                calculateResult();
-                return;
-            }
+            if(currentQIndex >= shuffledQuestions.length) return;
             
             const q = shuffledQuestions[currentQIndex];
             document.getElementById('question-counter').innerText = `${currentQIndex + 1} / ${shuffledQuestions.length}`;
@@ -573,9 +749,12 @@
         }
 
         function selectAnswer(point) {
+            const wrapper = document.getElementById('q-wrapper');
+            // 回答時にふわっと消えるアニメーション
+            wrapper.classList.add('fade-out');
+
             const q = shuffledQuestions[currentQIndex];
             const opposite = getOppositeTarget(q.target);
-            
             const actualTarget = point > 0 ? q.target : opposite;
             const absPoint = Math.abs(point);
             
@@ -583,13 +762,17 @@
             answerHistory[q.id] = { target: actualTarget, point: absPoint };
             
             currentQIndex++;
-            if(currentQIndex >= shuffledQuestions.length) {
-                document.getElementById('quiz-progress').style.width = '100%';
-                // 最後の質問に答えたら、ローディングを挟んで結果画面へ遷移
-                navigate('result-screen', true, calculateResult);
-            } else {
-                loadQuestion();
-            }
+            
+            setTimeout(() => {
+                if(currentQIndex >= shuffledQuestions.length) {
+                    document.getElementById('quiz-progress').style.width = '100%';
+                    navigate('result-screen', true, calculateResult);
+                } else {
+                    loadQuestion();
+                    // 新しい質問とともにふわっと現れる
+                    wrapper.classList.remove('fade-out');
+                }
+            }, 300); // fade-outのCSS transition時間(0.3s)と合わせる
         }
 
         function resolveAxis(sideA, sideB, axisCode) {
@@ -640,14 +823,17 @@
             const pctT = getPercent('T', 'I'); const pctI = 100 - pctT;
 
             setTimeout(() => {
-                document.getElementById('bar-kp-k').style.width = `${pctK}%`;
-                document.getElementById('bar-kp-p').style.width = `${pctP}%`;
-                document.getElementById('bar-of-o').style.width = `${pctO}%`;
-                document.getElementById('bar-of-f').style.width = `${pctF}%`;
-                document.getElementById('bar-bs-b').style.width = `${pctB}%`;
-                document.getElementById('bar-bs-s').style.width = `${pctS}%`;
-                document.getElementById('bar-ti-t').style.width = `${pctT}%`;
-                document.getElementById('bar-ti-i').style.width = `${pctI}%`;
+                document.getElementById('bar-k').style.width = `${pctK}%`;
+                document.getElementById('bar-p').style.width = `${pctP}%`;
+                
+                document.getElementById('bar-o').style.width = `${pctO}%`;
+                document.getElementById('bar-f').style.width = `${pctF}%`;
+                
+                document.getElementById('bar-b').style.width = `${pctB}%`;
+                document.getElementById('bar-s').style.width = `${pctS}%`;
+                
+                document.getElementById('bar-t').style.width = `${pctT}%`;
+                document.getElementById('bar-i').style.width = `${pctI}%`;
             }, 100);
 
             document.getElementById('pct-k').innerText = `${pctK}%`;
@@ -669,11 +855,10 @@
         function shareOnX() {
             const code = document.getElementById('result-code').innerText;
             const job = document.getElementById('result-job').innerText;
-            const title = document.getElementById('result-title').innerText;
-            const url = window.location.href;
-            const hashtag = APP_TITLE.replace(/\s+/g, '');
+            const url = "https://fubuki-zmtq.github.io/ZMTQ_16Types/";
+            const hashtag = "ZMTQ16Types診断";
 
-            const shareText = `${code}\n${job}\n${title}\n${APP_TITLE}\n${url}\n#${hashtag}`;
+            const shareText = `私のZMTQ16Types診断は…【${code}】${job}でした！\n\n${url}\n#${hashtag}`;
             const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
             
             window.open(xUrl, '_blank');
