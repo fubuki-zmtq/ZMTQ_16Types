@@ -11,7 +11,7 @@ const questionsData = [
     { id: 'Q9', text: 'ルールは皆のために絶対必要だと思う。', axis: 'OF', target: 'O' },
     { id: 'Q10', text: '決まりごとは、状況によって柔軟に変えてよいと思う。', axis: 'OF', target: 'F' },
     { id: 'Q11', text: '集団では、個人より全体の調和を優先したい。', axis: 'OF', target: 'O' },
-    { id: 'Q12', text: '自分らしさを守るためなら、周囲と違っても構わない。', axis: 'OF', target: 'F' },
+    { id: 'Q12', text: '自分らしさを守るためなら、周囲から浮いても構わない。', axis: 'OF', target: 'F' },
     { id: 'Q13', text: '約束や時間は必ず守るべきだと思う。', axis: 'OF', target: 'O' },
     { id: 'Q14', text: '納得できない決まりには従いたくない。', axis: 'OF', target: 'F' },
     { id: 'Q15', text: '多少不自由でも秩序が保たれる方が安心できる。', axis: 'OF', target: 'O' },
@@ -22,7 +22,7 @@ const questionsData = [
     { id: 'Q19', text: '成功は一人より仲間と分かち合いたい。', axis: 'BS', target: 'B' },
     { id: 'Q20', text: '他人より自分の成長を優先することが多い。', axis: 'BS', target: 'S' },
     { id: 'Q21', text: '誰かの役に立てることに喜びを感じる。', axis: 'BS', target: 'B' },
-    { id: 'Q22', text: '人に合わせすぎるくらいなら、一人の方が気楽だ。', axis: 'BS', target: 'S' },
+    { id: 'Q22', text: '人に合わせるくらいなら、一人の方が気楽だ。', axis: 'BS', target: 'S' },
     { id: 'Q23', text: '仲間が困っていたら、自分の予定を後回しにできる。', axis: 'BS', target: 'B' },
     { id: 'Q24', text: '最後に頼れるのは自分だけだと思う。', axis: 'BS', target: 'S' },
 
