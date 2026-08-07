@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZMTQ16Types診断</title>
+    <title>ZMTQ 16Types診断</title>
     <style>
         :root {
             --bg-color: #0b132b;
@@ -29,8 +29,12 @@
             display: flex;
             justify-content: center;
             min-height: 100vh;
+            /* 画面遷移時のガタつきを防ぐため、常にスクロールバーの領域を確保します */
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
 
+        /* なめらかな画面遷移用のアニメーション設定 */
         .screen {
             width: 100%;
             max-width: 800px;
@@ -38,16 +42,16 @@
             display: none;
             flex-direction: column;
             align-items: center;
-            animation: fadeIn 0.5s ease-in;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .screen.active {
             display: flex;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .screen.fade-in {
+            opacity: 1;
         }
 
         h1, h2, h3 {
@@ -136,6 +140,35 @@
             margin-bottom: 20px;
             width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* この診断についてのスタイリッシュな装飾 */
+        .indicator-box {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 0 12px 12px 0;
+            text-align: left;
+        }
+        .indicator-box.blue { border-left: 5px solid var(--primary-color); }
+        .indicator-box.cyan { border-left: 5px solid var(--highlight); }
+        .ind-letter {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        .blue .ind-letter { color: var(--primary-color); text-shadow: 0 0 15px var(--primary-glow); }
+        .cyan .ind-letter { color: var(--highlight); text-shadow: 0 0 15px rgba(0, 240, 255, 0.5); }
+        .ind-short {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+        .ind-long {
+            font-size: 0.95rem;
+            color: #bbb;
         }
 
         .progress-bar-container {
@@ -230,6 +263,7 @@
         .type-code { font-size: 1.2rem; font-weight: bold; color: var(--highlight); }
         .type-job { font-size: 0.9rem; }
 
+        /* モーダル（ポップアップ）のなめらかなアニメーション */
         .modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -238,9 +272,15 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        .modal.hidden { display: none; }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
 
         .modal-content {
             background: var(--bg-color);
@@ -251,6 +291,12 @@
             width: 90%;
             max-width: 500px;
             position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
         }
 
         .close-btn {
@@ -268,16 +314,12 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-color);
             z-index: 9999;
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.5s ease;
-        }
-
-        #transition-overlay.hidden {
-            display: none;
             opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
         .loader {
@@ -294,12 +336,12 @@
     </style>
 </head>
 <body>
-    <div id="transition-overlay" class="hidden">
+    <div id="transition-overlay">
         <div class="loader"></div>
-        <p>Loading...</p>
+        <p>診断結果を分析中...</p>
     </div>
 
-    <div id="home-screen" class="screen active">
+    <div id="home-screen" class="screen active fade-in">
         <h1 id="home-title">ZMTQ 16Types診断</h1>
         <p class="subtitle">from ZETA MYTH TREE QUEST</p>
         <div class="button-group">
@@ -309,23 +351,23 @@
         </div>
     </div>
 
-    <div id="about-screen" class="screen hidden">
+    <div id="about-screen" class="screen">
         <h2>この診断について</h2>
         <div class="content-box">
             <p>「もし自分がZMTQ世界に存在するとしたら、どのような役割を担う人物になるのか」をテーマとするエンターテインメントコンテンツです。</p>
             <p>職業は単純な能力ではなく、4つの価値観の組み合わせによって決定されます。</p>
-            <div id="about-indicators"></div>
         </div>
+        <div id="about-indicators" style="width: 100%;"></div>
         <button class="back-btn" onclick="navigate('home-screen')">ホームに戻る</button>
     </div>
 
-    <div id="list-screen" class="screen hidden">
+    <div id="list-screen" class="screen">
         <h2>16タイプ一覧</h2>
         <div id="type-grid" class="type-grid"></div>
         <button class="back-btn" onclick="navigate('home-screen')">ホームに戻る</button>
     </div>
 
-    <div id="type-modal" class="modal hidden">
+    <div id="type-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h3 id="modal-code-job"></h3>
@@ -335,7 +377,7 @@
         </div>
     </div>
 
-    <div id="quiz-screen" class="screen hidden">
+    <div id="quiz-screen" class="screen">
         <div class="progress-bar-container">
             <div id="quiz-progress"></div>
         </div>
@@ -349,9 +391,10 @@
             <button class="option-btn" onclick="selectAnswer(-2)">そう思わない</button>
             <button class="option-btn" onclick="selectAnswer(-4)">全くそう思わない</button>
         </div>
+        <button class="back-btn" onclick="navigate('home-screen')">ホームに戻る</button>
     </div>
 
-    <div id="result-screen" class="screen hidden">
+    <div id="result-screen" class="screen">
         <h2 id="result-code"></h2>
         <h3 id="result-job"></h3>
         <p id="result-title" class="highlight"></p>
@@ -384,8 +427,10 @@
         </div>
     </div>
 
+    <!-- ここに外部ファイルを読み込みます -->
     <script src="types.js"></script>
     <script src="questions.js"></script>
+    
     <script>
         const APP_TITLE = "ZMTQ16Types診断";
         document.getElementById('home-title').innerText = APP_TITLE;
@@ -395,30 +440,51 @@
         let scores = { K: 0, P: 0, O: 0, F: 0, B: 0, S: 0, T: 0, I: 0 };
         let answerHistory = {};
 
-        function navigate(targetScreenId, callback = null) {
-            const overlay = document.getElementById('transition-overlay');
-            overlay.style.display = 'flex';
+        // 画面遷移ロジック（ローディングの有無を指定可能に改善）
+        function navigate(targetScreenId, showLoading = false, callback = null) {
+            const current = document.querySelector('.screen.active');
             
-            setTimeout(() => {
-                overlay.style.opacity = '1';
-            }, 10);
-
-            setTimeout(() => {
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-                
-                const target = document.getElementById(targetScreenId);
-                target.classList.remove('hidden');
-                target.classList.add('active');
-
-                if(callback) callback();
-
-                overlay.style.opacity = '0';
+            if (current) {
+                // 現在の画面をフェードアウト
+                current.classList.remove('fade-in');
                 setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 500);
+                    current.classList.remove('active');
+                    processNextStep();
+                }, 300); // 0.3秒待機
+            } else {
+                processNextStep();
+            }
 
-            }, 2000);
+            function processNextStep() {
+                if (showLoading) {
+                    const overlay = document.getElementById('transition-overlay');
+                    overlay.style.display = 'flex';
+                    void overlay.offsetWidth; // 強制リフロー
+                    overlay.style.opacity = '1';
+
+                    if (callback) callback();
+
+                    // 2秒後にローディング画面を消して次へ
+                    setTimeout(() => {
+                        overlay.style.opacity = '0';
+                        setTimeout(() => {
+                            overlay.style.display = 'none';
+                            showTargetScreen();
+                        }, 500);
+                    }, 2000);
+                } else {
+                    if (callback) callback();
+                    showTargetScreen();
+                }
+            }
+
+            function showTargetScreen() {
+                const target = document.getElementById(targetScreenId);
+                target.classList.add('active');
+                void target.offsetWidth; // 強制リフロー
+                target.classList.add('fade-in');
+                window.scrollTo(0, 0); // 遷移時に一番上に戻す
+            }
         }
 
         window.onload = () => {
@@ -429,8 +495,16 @@
         function generateAboutPage() {
             const container = document.getElementById('about-indicators');
             let html = '';
+            // K, O, B, Tを青系、P, F, S, Iをシアン系に色分け
+            const colors = { K: 'blue', P: 'cyan', O: 'blue', F: 'cyan', B: 'blue', S: 'cyan', T: 'blue', I: 'cyan' };
+            
             for(const [key, val] of Object.entries(indicatorDesc)) {
-                html += `<p><strong>${key}</strong>: ${val.short}<br>${val.long}</p>`;
+                html += `
+                <div class="indicator-box ${colors[key]}">
+                    <h3 class="ind-letter">${key}</h3>
+                    <p class="ind-short">${val.short}</p>
+                    <p class="ind-long">${val.long}</p>
+                </div>`;
             }
             container.innerHTML = html;
         }
@@ -459,11 +533,13 @@
             });
             document.getElementById('modal-indicators').innerHTML = indHtml;
 
-            document.getElementById('type-modal').classList.remove('hidden');
+            // アニメーションを伴って表示
+            document.getElementById('type-modal').classList.add('active');
         }
 
         function closeModal() {
-            document.getElementById('type-modal').classList.add('hidden');
+            // アニメーションを伴って非表示
+            document.getElementById('type-modal').classList.remove('active');
         }
 
         function startQuiz() {
@@ -473,11 +549,12 @@
             
             shuffledQuestions = [...questionsData].sort(() => Math.random() - 0.5);
             
-            navigate('quiz-screen', loadQuestion);
+            navigate('quiz-screen', false, loadQuestion);
         }
 
         function loadQuestion() {
             if(currentQIndex >= shuffledQuestions.length) {
+                // ここは呼ばれませんが安全のため残します
                 calculateResult();
                 return;
             }
@@ -508,7 +585,8 @@
             currentQIndex++;
             if(currentQIndex >= shuffledQuestions.length) {
                 document.getElementById('quiz-progress').style.width = '100%';
-                navigate('result-screen', calculateResult);
+                // 最後の質問に答えたら、ローディングを挟んで結果画面へ遷移
+                navigate('result-screen', true, calculateResult);
             } else {
                 loadQuestion();
             }
