@@ -359,7 +359,8 @@
 
         #result-title {
             font-size: 1.1rem;
-            color: #fff;
+            color: var(--highlight);
+            font-weight: 700;
             background: rgba(2, 98, 174, 0.4);
             border: 1px solid var(--primary-color);
             box-shadow: 0 0 10px rgba(2, 98, 174, 0.5);
@@ -406,14 +407,14 @@
 
         .bar-left-fill {
             height: 100%;
-            background: linear-gradient(90deg, #012a4a, var(--primary-color));
+            background: linear-gradient(90deg, #00C6FF, var(--primary-color));
             box-shadow: 0 0 10px var(--primary-glow);
             transition: width 1s cubic-bezier(0.1, 0.7, 0.1, 1);
         }
 
         .bar-right-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--highlight), #808023);
+            background: linear-gradient(90deg, var(--highlight), #FFA500);
             box-shadow: 0 0 10px var(--highlight-glow);
             transition: width 1s cubic-bezier(0.1, 0.7, 0.1, 1);
         }
@@ -564,17 +565,17 @@
             
             <div class="diamond-options-container">
                 <div class="labels-row">
-                    <span style="color: var(--primary-color);">そう思う</span>
+                    <span style="color: var(--primary-color); text-shadow: 0 0 6px rgba(255, 255, 255, 0.8);">そう思う</span>
                     <span style="color: var(--highlight);">そう思わない</span>
                 </div>
                 <div class="diamonds-row">
-                    <button class="diamond-btn" onclick="selectAnswer(4)" title="とてもそう思う"><div class="diamond-shape diamond-left size-large"></div></button>
-                    <button class="diamond-btn" onclick="selectAnswer(2)" title="そう思う"><div class="diamond-shape diamond-left size-medium"></div></button>
-                    <button class="diamond-btn" onclick="selectAnswer(1)" title="少しそう思う"><div class="diamond-shape diamond-left size-small"></div></button>
+                    <button class="diamond-btn diamond-left size-large" onclick="selectAnswer(4)" title="とてもそう思う"><div class="diamond-shape"></div></button>
+                    <button class="diamond-btn diamond-left size-medium" onclick="selectAnswer(2)" title="そう思う"><div class="diamond-shape"></div></button>
+                    <button class="diamond-btn diamond-left size-small" onclick="selectAnswer(1)" title="少しそう思う"><div class="diamond-shape"></div></button>
                     
-                    <button class="diamond-btn" onclick="selectAnswer(-1)" title="あまりそう思わない"><div class="diamond-shape diamond-right size-small"></div></button>
-                    <button class="diamond-btn" onclick="selectAnswer(-2)" title="そう思わない"><div class="diamond-shape diamond-right size-medium"></div></button>
-                    <button class="diamond-btn" onclick="selectAnswer(-4)" title="全くそう思わない"><div class="diamond-shape diamond-right size-large"></div></button>
+                    <button class="diamond-btn diamond-right size-small" onclick="selectAnswer(-1)" title="あまりそう思わない"><div class="diamond-shape"></div></button>
+                    <button class="diamond-btn diamond-right size-medium" onclick="selectAnswer(-2)" title="そう思わない"><div class="diamond-shape"></div></button>
+                    <button class="diamond-btn diamond-right size-large" onclick="selectAnswer(-4)" title="全くそう思わない"><div class="diamond-shape"></div></button>
                 </div>
             </div>
         </div>
