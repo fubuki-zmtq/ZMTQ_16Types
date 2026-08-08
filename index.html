@@ -82,13 +82,14 @@ ZMTQ 16Types診断
             0% { stroke-dashoffset: 1000; opacity: 0; }
             2% { opacity: var(--line-op); }
             15% { stroke-dashoffset: 0; opacity: var(--line-op); }
-            80% { stroke-dashoffset: 0; opacity: var(--line-op); }
+            40% { stroke-dashoffset: 0; opacity: var(--line-op); }
+            60% { stroke-dashoffset: 0; opacity: 0; }
             100% { stroke-dashoffset: 0; opacity: 0; }
         }
 
-        .weight-1 { stroke-width: 0.5px; --line-op: 0.1; }
-        .weight-2 { stroke-width: 1.5px; --line-op: 0.25; }
-        .weight-3 { stroke-width: 3px; --line-op: 0.4; filter: drop-shadow(0 0 4px rgba(255,255,255,0.6)); }
+        .weight-1 { stroke-width: 0.2px; --line-op: 0.1; }
+        .weight-2 { stroke-width: 0.8px; --line-op: 0.25; }
+        .weight-3 { stroke-width: 1.5px; --line-op: 0.4; filter: drop-shadow(0 0 4px rgba(255,255,255,0.6)); }
 
         .meteor-line:nth-child(1) { animation-duration: 4.5s; animation-delay: 0s; }
         .meteor-line:nth-child(2) { animation-duration: 6.2s; animation-delay: 1.5s; }
