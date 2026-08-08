@@ -58,6 +58,18 @@ ZMTQ 16Types診断
             overflow-y: scroll;
             overflow-x: hidden;
             position: relative;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .bg-base {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 0%, #0a1630 0%, var(--bg-color) 100%);
+            z-index: -2; 
+            pointer-events: none;
         }
 
         .bg-lines {
@@ -608,6 +620,7 @@ ZMTQ 16Types診断
     </style>
 </head>
 <body>
+    <div class="bg-base"></div>
     <svg class="bg-lines" viewBox="0 0 1000 1000" preserveAspectRatio="none">
         <path class="meteor-line weight-1" pathLength="1000" d="M 0,800 L 200,600 L 300,700 L 500,400 L 700,500 L 1000,100" />
         <path class="meteor-line weight-2" pathLength="1000" d="M 100,100 L 300,300 L 200,500 L 600,600 L 800,300 L 900,500" />
