@@ -61,31 +61,42 @@ ZMTQ 16Types診断
             position: relative;
         }
 
-        .bg-geometry {
+        .bg-lines {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            overflow: hidden;
             pointer-events: none;
+            opacity: 0.9;
         }
-        .geo-shape {
-            position: absolute;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            background: linear-gradient(135deg, rgba(2, 98, 174, 0.05), transparent);
-            bottom: -200px;
-            animation: floatUp 20s infinite linear;
+        .meteor-line {
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 200 3000;
+            stroke-dashoffset: 3200;
+            animation: shootMeteor linear infinite;
         }
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        @keyframes shootMeteor {
+            0% { stroke-dashoffset: 3200; }
+            100% { stroke-dashoffset: -200; }
         }
-        .geo-1 { width: 120px; height: 120px; left: 10%; animation-duration: 25s; animation-delay: 0s; }
-        .geo-2 { width: 180px; height: 180px; left: 75%; animation-duration: 35s; animation-delay: 5s; border-radius: 50%; border-color: rgba(255, 255, 70, 0.03); background: linear-gradient(135deg, rgba(255, 255, 70, 0.03), transparent); }
-        .geo-3 { width: 60px; height: 60px; left: 40%; animation-duration: 18s; animation-delay: 2s; }
-        .geo-4 { width: 150px; height: 150px; left: 85%; animation-duration: 28s; animation-delay: 8s; }
-        .geo-5 { width: 90px; height: 90px; left: 20%; animation-duration: 22s; animation-delay: 12s; border-radius: 50%; }
+
+        .line-blue { stroke: var(--primary-color); }
+        .line-yellow { stroke: var(--highlight); }
+        
+        .thin { stroke-width: 2px; opacity: 0.15; filter: none; }
+        .medium { stroke-width: 4px; opacity: 0.4; }
+        .thick { stroke-width: 7px; opacity: 0.8; }
+        
+        .line-blue.medium, .line-blue.thick { filter: drop-shadow(0 0 5px var(--primary-glow)); }
+        .line-yellow.medium, .line-yellow.thick { filter: drop-shadow(0 0 5px var(--highlight-glow)); }
+
+        .meteor-line:nth-child(1) { animation-duration: 12s; animation-delay: 0s; }
+        .meteor-line:nth-child(2) { animation-duration: 18s; animation-delay: 3s; }
+        .meteor-line:nth-child(3) { animation-duration: 15s; animation-delay: 7s; }
+        .meteor-line:nth-child(4) { animation-duration: 24s; animation-delay: 1s; }
+        .meteor-line:nth-child(5) { animation-duration: 20s; animation-delay: 5s; }
+        .meteor-line:nth-child(6) { animation-duration: 16s; animation-delay: 9s; }
 
         .screen {
             width: 100%;
@@ -601,17 +612,17 @@ ZMTQ 16Types診断
     </style>
 </head>
 <body>
-    <!-- 背景用の幾何学アニメーションレイヤー -->
-    <div class="bg-geometry">
-        <div class="geo-shape geo-1"></div>
-        <div class="geo-shape geo-2"></div>
-        <div class="geo-shape geo-3"></div>
-        <div class="geo-shape geo-4"></div>
-        <div class="geo-shape geo-5"></div>
-    </div>
+    <!-- 背景用の折れ線流れ星アニメーションレイヤー -->
+    <svg class="bg-lines" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <polyline class="meteor-line line-blue thin" points="0,800 200,600 300,700 500,400 700,500 1000,100" />
+        <polyline class="meteor-line line-blue medium" points="100,100 300,300 200,500 600,600 800,300 900,500" />
+        <polyline class="meteor-line line-yellow thick" points="1000,800 800,900 600,700 400,800 200,500 0,600" />
+        <polyline class="meteor-line line-yellow thin" points="0,300 200,200 400,500 700,400 900,700 1000,600" />
+        <polyline class="meteor-line line-blue thick" points="200,1000 400,800 300,600 600,400 500,200 800,0" />
+        <polyline class="meteor-line line-yellow medium" points="800,1000 600,800 700,500 400,300 500,100 200,0" />
+    </svg>
 
     <div id="transition-overlay">
-        <!-- 幾何学ローダー -->
         <div class="geo-loader">
             <div class="geo-outer"></div>
             <div class="geo-inner"></div>
