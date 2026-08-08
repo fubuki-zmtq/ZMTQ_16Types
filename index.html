@@ -68,35 +68,40 @@ ZMTQ 16Types診断
             pointer-events: none;
             opacity: 0.9;
         }
+        /* 背景の流れ星アニメーション */
+        .bg-lines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
         .meteor-line {
             fill: none;
+            stroke: #ffffff; 
             stroke-linecap: round;
             stroke-linejoin: round;
-            stroke-dasharray: 200 3000;
-            stroke-dashoffset: 3200;
+            stroke-dasharray: 15 100; 
+            stroke-dashoffset: 115; 
             animation: shootMeteor linear infinite;
+            will-change: stroke-dashoffset; 
         }
         @keyframes shootMeteor {
-            0% { stroke-dashoffset: 3200; }
-            100% { stroke-dashoffset: -200; }
+            0% { stroke-dashoffset: 115; }
+            100% { stroke-dashoffset: -15; }
         }
 
-        .line-blue { stroke: var(--primary-color); }
-        .line-yellow { stroke: var(--highlight); }
-        
-        .thin { stroke-width: 2px; opacity: 0.15; filter: none; }
-        .medium { stroke-width: 4px; opacity: 0.4; }
-        .thick { stroke-width: 7px; opacity: 0.8; }
-        
-        .line-blue.medium, .line-blue.thick { filter: drop-shadow(0 0 5px var(--primary-glow)); }
-        .line-yellow.medium, .line-yellow.thick { filter: drop-shadow(0 0 5px var(--highlight-glow)); }
+        .weight-1 { stroke-width: 0.5px; opacity: 0.1; }
+        .weight-2 { stroke-width: 1.5px; opacity: 0.25; }
+        .weight-3 { stroke-width: 3px; opacity: 0.4; filter: drop-shadow(0 0 4px rgba(255,255,255,0.6)); }
 
-        .meteor-line:nth-child(1) { animation-duration: 12s; animation-delay: 0s; }
-        .meteor-line:nth-child(2) { animation-duration: 18s; animation-delay: 3s; }
-        .meteor-line:nth-child(3) { animation-duration: 15s; animation-delay: 7s; }
-        .meteor-line:nth-child(4) { animation-duration: 24s; animation-delay: 1s; }
-        .meteor-line:nth-child(5) { animation-duration: 20s; animation-delay: 5s; }
-        .meteor-line:nth-child(6) { animation-duration: 16s; animation-delay: 9s; }
+        .meteor-line:nth-child(1) { animation-duration: 4s; animation-delay: 0s; }
+        .meteor-line:nth-child(2) { animation-duration: 5.5s; animation-delay: 2s; }
+        .meteor-line:nth-child(3) { animation-duration: 3.5s; animation-delay: 1s; }
+        .meteor-line:nth-child(4) { animation-duration: 6s; animation-delay: 0.5s; }
+        .meteor-line:nth-child(5) { animation-duration: 4.8s; animation-delay: 3s; }
+        .meteor-line:nth-child(6) { animation-duration: 5s; animation-delay: 1.5s; }
 
         .screen {
             width: 100%;
@@ -612,14 +617,13 @@ ZMTQ 16Types診断
     </style>
 </head>
 <body>
-    <!-- 背景用の折れ線流れ星アニメーションレイヤー -->
     <svg class="bg-lines" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-        <polyline class="meteor-line line-blue thin" points="0,800 200,600 300,700 500,400 700,500 1000,100" />
-        <polyline class="meteor-line line-blue medium" points="100,100 300,300 200,500 600,600 800,300 900,500" />
-        <polyline class="meteor-line line-yellow thick" points="1000,800 800,900 600,700 400,800 200,500 0,600" />
-        <polyline class="meteor-line line-yellow thin" points="0,300 200,200 400,500 700,400 900,700 1000,600" />
-        <polyline class="meteor-line line-blue thick" points="200,1000 400,800 300,600 600,400 500,200 800,0" />
-        <polyline class="meteor-line line-yellow medium" points="800,1000 600,800 700,500 400,300 500,100 200,0" />
+        <path class="meteor-line weight-1" pathLength="100" d="M -100,800 C 200,600 300,900 600,400 S 900,500 1100,100" />
+        <path class="meteor-line weight-2" pathLength="100" d="M 100,-100 C 300,300 100,600 500,700 S 900,400 1100,600" />
+        <path class="meteor-line weight-3" pathLength="100" d="M 1100,800 C 800,900 600,500 400,800 S 100,300 -100,600" />
+        <path class="meteor-line weight-1" pathLength="100" d="M -100,300 C 200,200 400,600 700,400 S 900,800 1100,700" />
+        <path class="meteor-line weight-2" pathLength="100" d="M 200,1100 C 400,800 200,500 600,400 S 500,100 800,-100" />
+        <path class="meteor-line weight-3" pathLength="100" d="M 800,1100 C 600,800 800,400 400,300 S 500,100 200,-100" />
     </svg>
 
     <div id="transition-overlay">
