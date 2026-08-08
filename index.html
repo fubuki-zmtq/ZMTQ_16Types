@@ -66,41 +66,33 @@ ZMTQ 16Types診断
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
             pointer-events: none;
-            opacity: 0.9;
-        }
-        .bg-lines {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
             opacity: 0.8;
         }
-
         .meteor-line {
             fill: none;
-            stroke: #ffffff; 
+            stroke: #ffffff;
             stroke-linecap: round;
             stroke-linejoin: round;
-            stroke-dasharray: 15 100; 
-            stroke-dashoffset: 115; 
+            stroke-dasharray: 20 2000;
+            stroke-dashoffset: 2020; 
             animation: shootMeteor linear infinite;
-            will-change: stroke-dashoffset; 
+            will-change: stroke-dashoffset;
         }
         @keyframes shootMeteor {
-            0% { stroke-dashoffset: 115; }
-            100% { stroke-dashoffset: -15; }
+            0% { stroke-dashoffset: 2020; }
+            100% { stroke-dashoffset: -20; }
         }
 
         .weight-1 { stroke-width: 0.5px; opacity: 0.1; }
         .weight-2 { stroke-width: 1.5px; opacity: 0.25; }
         .weight-3 { stroke-width: 3px; opacity: 0.4; filter: drop-shadow(0 0 4px rgba(255,255,255,0.6)); }
 
-        .meteor-line:nth-child(1) { animation-duration: 4s; animation-delay: 0s; }
-        .meteor-line:nth-child(2) { animation-duration: 5.5s; animation-delay: 2s; }
-        .meteor-line:nth-child(3) { animation-duration: 3.5s; animation-delay: 1s; }
-        .meteor-line:nth-child(4) { animation-duration: 6s; animation-delay: 0.5s; }
-        .meteor-line:nth-child(5) { animation-duration: 4.8s; animation-delay: 3s; }
-        .meteor-line:nth-child(6) { animation-duration: 5s; animation-delay: 1.5s; }
+        .meteor-line:nth-child(1) { animation-duration: 2.5s; animation-delay: 0s; }
+        .meteor-line:nth-child(2) { animation-duration: 3.2s; animation-delay: 1.5s; }
+        .meteor-line:nth-child(3) { animation-duration: 2.1s; animation-delay: 0.5s; }
+        .meteor-line:nth-child(4) { animation-duration: 3.5s; animation-delay: 2s; }
+        .meteor-line:nth-child(5) { animation-duration: 2.8s; animation-delay: 1s; }
+        .meteor-line:nth-child(6) { animation-duration: 3.0s; animation-delay: 0.8s; }
 
         .screen {
             width: 100%;
@@ -617,12 +609,12 @@ ZMTQ 16Types診断
 </head>
 <body>
     <svg class="bg-lines" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-        <path class="meteor-line weight-1" pathLength="100" d="M -100,800 C 200,600 300,900 600,400 S 900,500 1100,100" />
-        <path class="meteor-line weight-2" pathLength="100" d="M 100,-100 C 300,300 100,600 500,700 S 900,400 1100,600" />
-        <path class="meteor-line weight-3" pathLength="100" d="M 1100,800 C 800,900 600,500 400,800 S 100,300 -100,600" />
-        <path class="meteor-line weight-1" pathLength="100" d="M -100,300 C 200,200 400,600 700,400 S 900,800 1100,700" />
-        <path class="meteor-line weight-2" pathLength="100" d="M 200,1100 C 400,800 200,500 600,400 S 500,100 800,-100" />
-        <path class="meteor-line weight-3" pathLength="100" d="M 800,1100 C 600,800 800,400 400,300 S 500,100 200,-100" />
+        <path class="meteor-line weight-1" pathLength="1000" d="M 0,800 L 200,600 L 300,700 L 500,400 L 700,500 L 1000,100" />
+        <path class="meteor-line weight-2" pathLength="1000" d="M 100,100 L 300,300 L 200,500 L 600,600 L 800,300 L 900,500" />
+        <path class="meteor-line weight-3" pathLength="1000" d="M 1000,800 L 800,900 L 600,700 L 400,800 L 200,500 L 0,600" />
+        <path class="meteor-line weight-1" pathLength="1000" d="M 0,300 L 200,200 L 400,500 L 700,400 L 900,700 L 1000,600" />
+        <path class="meteor-line weight-2" pathLength="1000" d="M 200,1000 L 400,800 L 300,600 L 600,400 L 500,200 L 800,0" />
+        <path class="meteor-line weight-3" pathLength="1000" d="M 800,1000 L 600,800 L 700,500 L 400,300 L 500,100 L 200,0" />
     </svg>
 
     <div id="transition-overlay">
