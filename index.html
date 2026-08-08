@@ -358,16 +358,11 @@
         }
 
         #result-title {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--highlight);
             font-weight: 700;
-            background: rgba(2, 98, 174, 0.4);
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 10px rgba(2, 98, 174, 0.5);
-            padding: 8px 20px;
-            border-radius: 30px;
             margin-bottom: 25px;
-            display: inline-block;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8), 0 0 8px var(--highlight-glow);
         }
 
         .chart-container {
@@ -565,8 +560,8 @@
             
             <div class="diamond-options-container">
                 <div class="labels-row">
-                    <span style="color: var(--primary-color); text-shadow: 0 0 6px rgba(255, 255, 255, 0.8);">そう思う</span>
-                    <span style="color: var(--highlight);">そう思わない</span>
+                    <span style="color: var(--primary-color); text-shadow: 1px 1px 3px rgba(0,0,0,0.9), 0 0 5px rgba(255,255,255,0.4);">そう思う</span>
+                    <span style="color: var(--highlight); text-shadow: 1px 1px 3px rgba(0,0,0,0.9);">そう思わない</span>
                 </div>
                 <div class="diamonds-row">
                     <button class="diamond-btn diamond-left size-large" onclick="selectAnswer(4)" title="とてもそう思う"><div class="diamond-shape"></div></button>
