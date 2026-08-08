@@ -357,9 +357,9 @@ ZMTQ 16Types診断
             transform: rotate(45deg) scale(1.2);
         }
 
-        .size-large .diamond-shape { width: 36px; height: 36px; }
-        .size-medium .diamond-shape { width: 28px; height: 28px; }
-        .size-small .diamond-shape { width: 20px; height: 20px; }
+        .diamond-shape.size-large { width: 36px; height: 36px; }
+        .diamond-shape.size-medium { width: 28px; height: 28px; }
+        .diamond-shape.size-small { width: 20px; height: 20px; }
 
         #result-code {
             font-family: var(--font-bebas);
@@ -863,7 +863,7 @@ ZMTQ 16Types診断
 
         function selectAnswer(point) {
             document.activeElement.blur();
-            
+
             const wrapper = document.getElementById('q-wrapper');
             wrapper.classList.add('fade-out');
 
