@@ -49,7 +49,8 @@ ZMTQ 16Types診断
 
         body {
             font-family: var(--font-main);
-            background-color: var(--bg-color);
+            background: radial-gradient(circle at 50% 0%, #0a1630 0%, var(--bg-color) 100%);
+            background-attachment: fixed;
             color: var(--text-color);
             line-height: 1.6;
             display: flex;
@@ -57,7 +58,34 @@ ZMTQ 16Types診断
             min-height: 100vh;
             overflow-y: scroll;
             overflow-x: hidden;
+            position: relative;
         }
+
+        .bg-geometry {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .geo-shape {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: linear-gradient(135deg, rgba(2, 98, 174, 0.05), transparent);
+            bottom: -200px;
+            animation: floatUp 20s infinite linear;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+        .geo-1 { width: 120px; height: 120px; left: 10%; animation-duration: 25s; animation-delay: 0s; }
+        .geo-2 { width: 180px; height: 180px; left: 75%; animation-duration: 35s; animation-delay: 5s; border-radius: 50%; border-color: rgba(255, 255, 70, 0.03); background: linear-gradient(135deg, rgba(255, 255, 70, 0.03), transparent); }
+        .geo-3 { width: 60px; height: 60px; left: 40%; animation-duration: 18s; animation-delay: 2s; }
+        .geo-4 { width: 150px; height: 150px; left: 85%; animation-duration: 28s; animation-delay: 8s; }
+        .geo-5 { width: 90px; height: 90px; left: 20%; animation-duration: 22s; animation-delay: 12s; border-radius: 50%; }
 
         .screen {
             width: 100%;
@@ -134,7 +162,7 @@ ZMTQ 16Types診断
         }
 
         button {
-            background-color: transparent;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
             color: var(--text-color);
             border: 1px solid var(--primary-color);
             padding: 15px 20px;
@@ -144,11 +172,11 @@ ZMTQ 16Types診断
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
-            box-shadow: 0 0 5px rgba(2, 98, 174, 0.2);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3), 0 0 5px rgba(2, 98, 174, 0.2);
         }
 
         button:hover {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), rgba(2, 98, 174, 0.6));
             box-shadow: 0 0 15px var(--primary-glow);
             color: #fff;
         }
@@ -159,32 +187,37 @@ ZMTQ 16Types診断
             max-width: 200px;
             box-shadow: none;
             margin-top: 15px;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .back-btn:hover {
-            background-color: #444;
-            border-color: #444;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #888;
             color: #fff;
         }
 
         .x-btn {
             border-color: #1DA1F2;
             color: #1DA1F2;
+            background: rgba(29, 161, 242, 0.05);
         }
 
         .x-btn:hover {
-            background-color: #1DA1F2;
+            background: linear-gradient(135deg, #1DA1F2, rgba(29, 161, 242, 0.6));
             box-shadow: 0 0 15px rgba(29, 161, 242, 0.6);
             color: #fff;
+            border-color: #1DA1F2;
         }
 
         .content-box {
-            background: var(--card-bg);
+            background: linear-gradient(135deg, rgba(28, 37, 65, 0.9) 0%, rgba(10, 15, 30, 0.8) 100%);
             padding: 25px;
             border-radius: 12px;
             margin-bottom: 20px;
             width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
         }
 
         .indicator-pair {
@@ -206,10 +239,12 @@ ZMTQ 16Types診断
 
         .indicator-box {
             padding: 20px;
-            background: rgba(255, 255, 255, 0.03);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.3));
             border-radius: 12px;
             text-align: left;
             margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
         .indicator-box.blue { border-top: 4px solid var(--primary-color); }
         .indicator-box.yellow { border-top: 4px solid var(--highlight); }
@@ -255,11 +290,12 @@ ZMTQ 16Types診断
             border-radius: 3px;
             margin-bottom: 15px;
             overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
         }
 
         #quiz-progress {
             height: 100%;
-            background: var(--highlight);
+            background: linear-gradient(90deg, var(--primary-color), var(--highlight));
             width: 0%;
             transition: width 0.3s;
             box-shadow: 0 0 8px var(--highlight-glow);
@@ -283,6 +319,7 @@ ZMTQ 16Types診断
             justify-content: center;
             margin-bottom: 40px;
             word-break: auto-phrase;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
         .diamond-options-container {
@@ -324,11 +361,6 @@ ZMTQ 16Types診断
             align-items: center;
             padding: 10px;
             margin: -10px;
-        }
-
-        .diamond-btn:hover {
-            background: transparent !important;
-            box-shadow: none !important;
         }
 
         .diamond-shape {
@@ -376,6 +408,7 @@ ZMTQ 16Types診断
             font-weight: 700;
             color: var(--highlight);
             margin-bottom: 15px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
         }
 
         #result-title {
@@ -388,10 +421,13 @@ ZMTQ 16Types診断
 
         .chart-container {
             width: 100%;
-            background: var(--card-bg);
+            background: linear-gradient(135deg, rgba(28, 37, 65, 0.9), rgba(10, 15, 30, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 25px 20px;
             border-radius: 12px;
             margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
         }
 
         .single-bar-row {
@@ -414,11 +450,12 @@ ZMTQ 16Types診断
         .single-bar-bg {
             width: 100%;
             height: 18px;
-            background: #222;
+            background: rgba(0, 0, 0, 0.6);
             border-radius: 9px;
             overflow: hidden;
             display: flex;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .bar-left-fill {
@@ -464,6 +501,7 @@ ZMTQ 16Types診断
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
         .modal.active {
@@ -472,8 +510,8 @@ ZMTQ 16Types診断
         }
 
         .modal-content {
-            background: var(--bg-color);
-            border: 1px solid var(--primary-color);
+            background: linear-gradient(135deg, rgba(28, 37, 65, 0.95), rgba(10, 15, 30, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 30px var(--primary-glow);
             padding: 35px 30px;
             border-radius: 12px;
@@ -497,12 +535,12 @@ ZMTQ 16Types診断
             transition: color 0.2s;
         }
 
-        .close-btn:hover { color: #fff; }
+        .close-btn:hover { color: #fff; text-shadow: 0 0 8px #fff; }
 
         #transition-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-color);
+            background: radial-gradient(circle at 50% 50%, rgba(10, 22, 48, 0.95), rgba(4, 8, 19, 0.98));
             z-index: 9999;
             display: none;
             flex-direction: column;
@@ -510,16 +548,37 @@ ZMTQ 16Types診断
             align-items: center;
             opacity: 0;
             transition: opacity 0.5s ease;
+            backdrop-filter: blur(8px);
         }
 
-        .loader {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid var(--highlight);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 15px;
+        .geo-loader {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            margin-bottom: 25px;
+        }
+        .geo-outer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-glow), inset 0 0 10px var(--primary-glow);
+            animation: spinOuter 3s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        }
+        .geo-inner {
+            position: absolute;
+            top: 15px; left: 15px; width: 30px; height: 30px;
+            background: var(--highlight);
+            box-shadow: 0 0 20px var(--highlight-glow);
+            animation: spinInner 2s ease-in-out infinite alternate;
+        }
+        @keyframes spinOuter {
+            0% { transform: rotate(0deg) scale(1); border-radius: 0%; }
+            50% { transform: rotate(180deg) scale(1.2); border-radius: 50%; border-color: var(--highlight); box-shadow: 0 0 10px var(--highlight-glow), inset 0 0 10px var(--highlight-glow); }
+            100% { transform: rotate(360deg) scale(1); border-radius: 0%; }
+        }
+        @keyframes spinInner {
+            0% { transform: rotate(45deg) scale(0.5); opacity: 0.5; background: var(--primary-color); }
+            100% { transform: rotate(405deg) scale(1); opacity: 1; background: var(--highlight); }
         }
 
         .novel-link {
@@ -539,14 +598,25 @@ ZMTQ 16Types診断
             text-shadow: 0 0 15px var(--highlight-glow);
             border-bottom-color: #fff;
         }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+    <!-- 背景用の幾何学アニメーションレイヤー -->
+    <div class="bg-geometry">
+        <div class="geo-shape geo-1"></div>
+        <div class="geo-shape geo-2"></div>
+        <div class="geo-shape geo-3"></div>
+        <div class="geo-shape geo-4"></div>
+        <div class="geo-shape geo-5"></div>
+    </div>
+
     <div id="transition-overlay">
-        <div class="loader"></div>
-        <p>診断結果を分析中...</p>
+        <!-- 幾何学ローダー -->
+        <div class="geo-loader">
+            <div class="geo-outer"></div>
+            <div class="geo-inner"></div>
+        </div>
+        <p style="font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 5px rgba(255,255,255,0.5);">診断結果を分析中...</p>
     </div>
 
     <div id="home-screen" class="screen active fade-in">
@@ -593,7 +663,7 @@ ZMTQ 16Types診断
         <div class="progress-bar-container">
             <div id="quiz-progress"></div>
         </div>
-        <p id="question-counter" style="font-family: var(--font-bebas); font-size: 1.5rem; color: #888; letter-spacing: 2px;">1 / 32</p>
+        <p id="question-counter" style="font-family: var(--font-bebas); font-size: 1.5rem; color: #888; letter-spacing: 2px; text-shadow: 1px 1px 2px #000;">1 / 32</p>
         
         <div id="q-wrapper" class="question-wrapper">
             <h2 id="question-text"></h2>
