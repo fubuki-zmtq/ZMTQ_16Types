@@ -272,6 +272,7 @@ ZMTQ 16Types診断
         }
         .question-wrapper.fade-out {
             opacity: 0;
+            pointer-events: none;
         }
 
         #question-text {
@@ -336,21 +337,21 @@ ZMTQ 16Types診断
             transition: all 0.2s ease;
         }
 
-        .diamond-left .diamond-shape {
+        .diamond-shape.diamond-left {
             border: 2px solid var(--primary-color);
             box-shadow: 0 0 5px var(--primary-glow);
         }
-        .diamond-btn:hover .diamond-left .diamond-shape {
+        .diamond-btn:hover .diamond-shape.diamond-left {
             background-color: var(--primary-color);
             box-shadow: 0 0 15px var(--primary-glow);
             transform: rotate(45deg) scale(1.2);
         }
 
-        .diamond-right .diamond-shape {
+        .diamond-shape.diamond-right {
             border: 2px solid var(--highlight);
             box-shadow: 0 0 5px var(--highlight-glow);
         }
-        .diamond-btn:hover .diamond-right .diamond-shape {
+        .diamond-btn:hover .diamond-shape.diamond-right {
             background-color: var(--highlight);
             box-shadow: 0 0 15px var(--highlight-glow);
             transform: rotate(45deg) scale(1.2);
@@ -861,6 +862,8 @@ ZMTQ 16Types診断
         }
 
         function selectAnswer(point) {
+            document.activeElement.blur();
+            
             const wrapper = document.getElementById('q-wrapper');
             wrapper.classList.add('fade-out');
 
